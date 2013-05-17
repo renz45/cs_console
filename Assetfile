@@ -1,0 +1,41 @@
+require 'rake-pipeline-web-filters'
+
+output 'public'
+
+# Another file can be created and it can be run by doing: rakep build -c <file>
+# if other build options are required, for example if there is a build option
+# that doesn't include code mirror files.
+
+input 'app/views' do
+  match '**/*.html' do
+    copy
+  end
+end
+
+input 'app/javascripts' do
+  match '**/*.coffee' do
+    coffee_script
+  end
+
+  match '**/*.js' do
+    minispade
+    concat 'application.js'
+    # uglify
+  end
+end
+
+input 'app/stylesheets' do
+  match '**/*.sass' do
+    sass
+  end
+
+  match '**/*.css' do
+    concat 'application.css'
+  end
+end
+
+input 'data' do
+  match '**/*' do
+    copy { |input| "data/#{input}" }
+  end
+end
