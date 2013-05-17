@@ -28,7 +28,7 @@ code mirror addon/plugin out there.
         Also, the console will not enter a state where it is ready for another command unless this responder has been called. If you want to implement a command that does not have any output Something like 'next' for progressing through course levels, then make sure to call the responder passing a falsy value(or nothing) The format of this response can be either an array of objects or a single object.
         **Example:**
 
-        ```ruby
+        ```javascript
         [
             {content: "Blah blah output\noutput", className: 'console-output'},
             {content: "Blah blah output\noutput", className: 'console-error'}
