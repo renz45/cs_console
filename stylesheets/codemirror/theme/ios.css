@@ -1,0 +1,31 @@
+/* Custom iOS Theme */
+
+.CodeMirror { font-size: 13px; font-family: Menlo, Monaco, Courier, monospace; line-height: 1.3; }
+.cm-s-ios { background: #222; color: white; }
+.cm-s-ios .CodeMirror-selected { background: #555 !important; }
+
+.cm-s-ios .CodeMirror-gutters { background: #333; border-right: 0; }
+.cm-s-ios .CodeMirror-linenumber { color: #d0d0d0; }
+.cm-s-ios .CodeMirror-cursor { border-left: 1px solid white !important; }
+
+.cm-s-ios .cm-keyword {  color: $color-alt; }
+.cm-s-ios .cm-atom { color: lighten($color-highlight, 15%); }
+.cm-s-ios .cm-number { color:  #FFEE98; }
+.cm-s-ios .cm-def { color: #8DA6CE; }
+.cm-s-ios span.cm-variable-2, .cm-s-cobalt span.cm-tag { color: #FFC66D }
+.cm-s-ios span.cm-variable-3, .cm-s-cobalt span.cm-def { color: #FFC66D }
+.cm-s-ios .cm-operator { color: #888; }
+.cm-s-ios .cm-comment { color: gray; font-weight: bold; }
+.cm-s-ios .cm-string { color:  lighten($color-success, 15%); }
+.cm-s-ios .cm-string-2 { color: red }
+.cm-s-ios .cm-meta { color: lighten($color-success, 15%); }
+.cm-s-ios .cm-error { border-bottom: 1px solid red; }
+.cm-s-ios .cm-builtin { color: #8DA6CE; }
+.cm-s-ios .cm-tag { color: #8DA6CE; }
+.cm-s-ios .cm-attribute { color: #8DA6CE; }
+.cm-s-ios .cm-header { color: #FF6400; }
+.cm-s-ios .cm-hr { color: #AEAEAE; }
+.cm-s-ios .cm-link { color: blue; }
+
+.cm-s-ios .build-error { background: darken($color-highlight, 10%); color: #FFF; }
+.cm-s-ios .build-warning { background: darken($color-alt, 10%); color: #FFF; }
