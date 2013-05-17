@@ -26,6 +26,7 @@ code mirror addon/plugin out there.
     - ***responder*** - The responder is used to send some sort of a response to the console. This can be an asyncronous response. The className sets a class name on the html element of the output widget. The content can be either a string, or a valid HTMLElement. *Note, this is not a jQuery object*.
 
         Also, the console will not enter a state where it is ready for another command unless this responder has been called. If you want to implement a command that does not have any output Something like 'next' for progressing through course levels, then make sure to call the responder passing a falsy value(or nothing) The format of this response can be either an array of objects or a single object.
+
         **Example:**
 
         ```javascript
@@ -39,10 +40,8 @@ code mirror addon/plugin out there.
 
 
 * **prompt** - This is the value of the prompt set in the editor.
-* **cancelHandle** - This callback is called when a command is canceled. This is currently
-                   not implemented.
+* **cancelHandle** - This callback is called when a command is canceled. This is currently not implemented.
 * **theme** - Set the code mirror theme, defaults to 'vibrant-ink'
-
 * **lineNumbers** - Enables line numbers, defaults to false
 
 ##Methods
@@ -61,3 +60,6 @@ If you find that the console gets stuck in a state where the prompt isn't being 
 and it's not responding to input, make sure that responder is called in your 'commandHandle'
 callback at some point. If you don't want to display any output just call the responder with
 an empty or falsy argument to force the console to ready itself for more input.
+
+##Working on cs_console
+*under construction*
