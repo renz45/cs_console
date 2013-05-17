@@ -1,0 +1,12 @@
+{
+  "name": "cs_console",
+  "version": "0.0.0",
+  "description": "Console used in Code School Courses, uses Code Mirror internally to handle the heavy lifting",
+  "main": "index.js",
+  "scripts": {
+    "test": "spec"
+  },
+  "repository": "",
+  "author": "Adam Rensel",
+  "license": "MIT"
+}
