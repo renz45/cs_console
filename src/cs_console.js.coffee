@@ -1,82 +1,24 @@
-# Code School Console
-# This console was designed to take advantage of code mirrors except key input
-# and code highlight ability. The idea is that we should let code mirror handle all
-# the hard key input stuff while we focus on the console ui
+# The MIT License (MIT)
 
+# Copyright (c) 2013 Adam Rensel, Code School LLC
 
-# Dependancies:
-#   CodeMirror:
-#     vibrant-ink theme
-#     Code Mirror 2 Editor
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
 
-# Usage:
-#   You can Instantiate CSConsole and pass a variety of options to customize the console
-#   functionality.
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
 
-#   Options:
-#     prompt - Sets the console prompt, this can be anything
-#     initialValue - Sets the initialValue of the console input field
-#     historyLabel - Sets a label for the localStorage history. This should be set
-#                    if you don't want consoles from different applications to share history
-#     welcomeMessage - An initial message at the top of the console when it first loads
-#     autoFocus - Whether or not the console should be focused on page load.
-#     commandValidate - Callback function for validating a command before it's submitted.
-#                       This callback should return a boolean
-#     commandHandle - Callback function for handling a command. This callback is
-#                     passed the following arguments:
-#                     inputContent - This is the content of the input
-#                     responder - The responder is used to send some sort of a response
-#                                 to the console. This can be an asyncronous response.
-#                                 The format of this response should be:
-#                                 [
-#                                   {content: "Blah blah output\noutput", className: 'console-output'}
-#                                   {content: "Blah blah output\noutput", className: 'console-error'}
-#                                 ]
-#                                 It can be either an array of objects or a single object.
-
-#                                 The className sets a class name on the html element of the
-#                                 output widget.
-
-#                                 The content can be either a string, or a valid HTMLElement.
-#                                 Note, this is not a jQuery object.
-
-#                                 Also note, that the console will not enter a state where it is
-#                                 ready for another command unless this responder has been called.
-#                                 If you want to implement a command that does not have any output
-#                                 Something like 'next' for progressing through course levels, then
-#                                 make sure to call the responder passing a falsy value(or nothing)
-
-
-
-#                     prompt - This is the value of the prompt set in the editor.
-
-#     cancelHandle - This callback is called when a command is canceled. This is currently
-#                    not implemented.
-#
-#     theme - Set the code mirror theme, defaults to 'vibrant-ink'
-
-#     lineNumbers - Enables line numbers, defaults to false
-
-#   Additional api methods:
-#     setValue(string) - Set the value of the input line
-#     getValue - Get the value of the input, this includes multiline input
-#     setPrompt(string) - Set the prompt
-#     reset(prompt) - Clear the console, pass false to this method to not display the welcome message.
-#     buildWidget(lineNumber, responseObject) - Manually create a output widget. This requires a lineNumber
-#                                               and a response object like the one used in the commandHandle
-#                                               callback Method above.
-#     innerConsole - Return the CodeMirror instance used within the console, useful for low level
-#                    interface functionality.
-#     focus - Focus the input typer box
-#     appendToInput - Append a value to the typer box
-#
-
-# Misc tips and troubles
-# If you find that the console gets stuck in a state where the prompt isn't being displayed
-# and it's not responding to input, make sure that responder is called in your 'commandHandle'
-# callback at some point. If you don't want to display any output just call the responder with
-# an empty or falsy argument to force the console to ready itself for more input.
-#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
 class window.CSConsole
   keyMap:
     'Alt-Delete': "delGroupAfter"

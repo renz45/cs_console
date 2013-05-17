@@ -6,7 +6,10 @@
   "scripts": {
     "test": "spec"
   },
-  "repository": "",
+  "repository": "https://github.com/renz45/cs_console/blob/master",
   "author": "Adam Rensel",
-  "license": "MIT"
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/renz45/cs_console/blob/master/LICENSE"
+  }
 }
