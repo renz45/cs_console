@@ -7,4 +7,8 @@ group :development do
   gem 'rake-pipeline'
   gem 'rake-pipeline-web-filters'
   gem 'sass'
+  gem 'thor'
+  gem 'pry'
+  gem 'active_support'
+  gem 'i18n'
 end
