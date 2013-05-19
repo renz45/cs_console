@@ -1,6 +1,7 @@
 require 'thor'
 require "rake-pipeline"
 require 'rake-pipeline-web-filters'
+require 'fileutils'
 require_relative 'recipes'
 
 require 'pry'
@@ -19,16 +20,30 @@ module CSConsole
           say "#{recipe_class.description}\n"
         end
       else
-        block = CSConsole::Recipes.get_recipe(options[:build_type]).build
+        # CSConsole::Recipes.get_recipe(options[:build_type]).build_options.instance_exec
         puts "Compiling files..."
-        Rake::Pipeline::Project.new.build(&block).invoke
+        project.invoke
         puts "Adding license to compiled files..."
         add_license_to_files('./compiled/cs_console.css', './compiled/cs_console.js')
+        puts 'Cleaning up temporary files...'
+        clean_up_temp_files
         puts 'Finished! Compiled files can be found in /compiled'
       end
     end
 
     private
+
+    def project
+      unless @project
+        block = CSConsole::Recipes.get_recipe(options[:build_type]).build
+        @project ||= Rake::Pipeline::Project.new.build(&block)
+      end
+      @project
+    end
+
+    def clean_up_temp_files
+      FileUtils.rm_rf(File.expand_path('./tmp'))
+    end
 
     def add_license_to_files(*file_paths)
       licenseContent = File.read(File.expand_path('./LICENSE'))

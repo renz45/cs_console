@@ -8,47 +8,44 @@ module CSConsole
         TEXT
       end
 
+      def self.build_options
+        Proc.new do
+          puts 'options ho!'
+        end
+      end
+
       def self.build
         Proc.new do
           output 'compiled'
 
-          input 'app/javascripts' do
+          # Javascript files
+          input 'app' do
             match '**/*.coffee' do
               coffee_script
             end
 
-            match '**/*.js' do
-              minispade
+            match 'javascripts/**/*.js' do
+              concat 'cs_console.js'
+              # uglify
+            end
+
+            match 'vendor/javascripts/**/*.js' do
               concat 'cs_console.js'
               # uglify
             end
           end
 
-          input 'app/vendor' do
-            match '**/*.coffee' do
-              coffee_script
-            end
-
+          # CSS Files
+          input 'app' do
             match '**/*.sass' do
               sass
             end
 
-            match '**/*.js' do
-              minispade
-              concat 'cs_console.js'
-            end
-
-            match '**/*.css' do
+            match 'stylesheets/**/*.css' do
               concat 'cs_console.css'
             end
-          end
 
-          input 'app/stylesheets' do
-            match '**/*.sass' do
-              sass
-            end
-
-            match '**/*.css' do
+            match 'vendor/stylesheets/**/*.css' do
               concat 'cs_console.css'
             end
           end

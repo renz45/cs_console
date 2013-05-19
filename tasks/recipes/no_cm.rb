@@ -19,7 +19,7 @@ module CSConsole
             end
 
             match '**/*.js' do
-              minispade
+              # minispade
               concat 'cs_console.js'
               # uglify
             end
