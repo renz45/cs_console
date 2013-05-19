@@ -75,7 +75,7 @@ callback at some point. If you don't want to display any output just call the re
 an empty or falsy argument to force the console to ready itself for more input.
 
 ##Building cs_console
-The cs_console uses thor to compile all the javascript and css into single files to make
+The cs_console uses thor and rake-pipeline to compile all the javascript and css into single files to make
 it more portable. At code school we almost never need to include code mirror with the console
 since most courses are already using it. You can rebuild the console files to only include
 the console javascript and nothing from code mirror if needed.
@@ -86,12 +86,12 @@ takes up space.
 
 You can run the build script by typing: `./bin/cs_console build`
 
-You can get a list of available options by just typing: ` ./bin/cs_console`
+You can get a list of available options by typing: ` ./bin/cs_console`
 
-The single javascript file `cs_console.js` and css `cs_console.css` will be in the
+The single javascript file `cs_console.js` and css `cs_console.css` will be placed in the
 `/compiled` directory.
 
-Currently there are 2 recipes available:
+Currently there are two recipes available:
 * **all** - Builds the console with all code mirror javascript. This option will prompt you do enter a list of modes and a theme.
 * **no_cm** - Builds the console with only console javascript.
 
