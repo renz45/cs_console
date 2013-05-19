@@ -74,5 +74,26 @@ and it's not responding to input, make sure that responder is called in your 'co
 callback at some point. If you don't want to display any output just call the responder with
 an empty or falsy argument to force the console to ready itself for more input.
 
+##Building cs_console
+The cs_console uses thor to compile all the javascript and css into single files to make
+it more portable. At code school we almost never need to include code mirror with the console
+since most courses are already using it. You can rebuild the console files to only include
+the console javascript and nothing from code mirror if needed.
+
+You can also build the console with code mirror and only include the code highlighting
+modes and theme that you need. This way you don't load a bunch of extra stuff that just
+takes up space.
+
+You can run the build script by typing: `./bin/cs_console build`
+
+You can get a list of available options by just typing: ` ./bin/cs_console`
+
+The single javascript file `cs_console.js` and css `cs_console.css` will be in the
+`/compiled` directory.
+
+Currently there are 2 recipes available:
+* **all** - Builds the console with all code mirror javascript. This option will prompt you do enter a list of modes and a theme.
+* **no_cm** - Builds the console with only console javascript.
+
 ##Working on cs_console
 *under construction*
