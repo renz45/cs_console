@@ -9,12 +9,17 @@ module CSConsole
       end
 
       def self.build_options
-        Proc.new do
-          puts 'options ho!'
+        @build_options = Proc.new do
+          options = {}
+          options[:theme] = ask('Choose a Code Mirror theme. The default is vibrant-ink.')
+          options[:theme] = 'vibrant-ink' if options[:theme].length == 0
+          options[:modes] = ask('Specify which code highlight modes to include.')
+          options[:modes] = options[:modes].gsub(/\s/, '').split(',')
+          options
         end
       end
 
-      def self.build
+      def self.build(build_options=nil)
         Proc.new do
           output 'compiled'
 
@@ -29,7 +34,14 @@ module CSConsole
               # uglify
             end
 
-            match 'vendor/javascripts/**/*.js' do
+            build_options[:modes].each do |mode|
+              match "vendor/javascripts/codemirror/mode/**/#{mode}.js" do
+                concat 'cs_console.js'
+                # uglify
+              end
+            end
+
+            match 'vendor/javascripts/*.js' do
               concat 'cs_console.js'
               # uglify
             end
@@ -45,7 +57,11 @@ module CSConsole
               concat 'cs_console.css'
             end
 
-            match 'vendor/stylesheets/**/*.css' do
+            match "vendor/stylesheets/codemirror/theme/#{build_options[:theme]}.css" do
+              concat 'cs_console.css'
+            end
+
+            match 'vendor/stylesheets/*.css' do
               concat 'cs_console.css'
             end
           end

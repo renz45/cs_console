@@ -20,7 +20,6 @@ module CSConsole
           say "#{recipe_class.description}\n"
         end
       else
-        # CSConsole::Recipes.get_recipe(options[:build_type]).build_options.instance_exec
         puts "Compiling files..."
         project.invoke
         puts "Adding license to compiled files..."
@@ -35,10 +34,17 @@ module CSConsole
 
     def project
       unless @project
-        block = CSConsole::Recipes.get_recipe(options[:build_type]).build
-        @project ||= Rake::Pipeline::Project.new.build(&block)
+        build_options = nil
+        if recipe.build_options
+          build_options = instance_exec(&recipe.build_options)
+        end
+        @project ||= Rake::Pipeline::Project.new.build(&recipe.build(build_options))
       end
       @project
+    end
+
+    def recipe
+      @recipe ||= CSConsole::Recipes.get_recipe(options[:build_type])
     end
 
     def clean_up_temp_files
