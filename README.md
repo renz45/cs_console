@@ -4,8 +4,20 @@ and code highlight ability. The idea is that we should let code mirror handle al
 the hard key input stuff while we focus on the console ui. We can also use any
 code mirror addon/plugin out there.
 
+This is a console interface, there is no inbuilt ability to eval javascript, or
+run shell commands. Likely such a console would use this as the ui for these
+types of functionality.
+
+The demo.html file implements a very simple javascript eval to show console
+functionality.
+
 
 ##Dependancies:
+This console uses the Code Mirror 2 editor internally, so it and it's associated
+files are needed to make the console work. There are different build options that
+allow you to compile a version of the console without code mirror if you are already
+loading it as part of the larger project.
+
 * CodeMirror:
     - vibrant-ink theme
     - Code Mirror 2 Editor
@@ -20,6 +32,7 @@ code mirror addon/plugin out there.
 * **historyLabel** - Sets a label for the localStorage history. This should be set if you don't want consoles from different applications to share history
 * **welcomeMessage** - An initial message at the top of the console when it first loads
 * **autoFocus** - Whether or not the console should be focused on page load.
+* **syntax** - set the syntax of the console, useful for ruby irb or javascript consoles.
 * **commandValidate** - Callback function for validating a command before it's submitted. This callback should return a boolean
 * **commandHandle** - Callback function for handling a command. This callback is passed the following arguments:
     - ***inputContent*** - This is the content of the input
