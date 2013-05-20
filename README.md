@@ -9,7 +9,8 @@ run shell commands. Likely such a console would use this as the ui for these
 types of functionality.
 
 The demo.html file implements a very simple javascript eval to show console
-functionality.
+functionality. You can also visit the [demo page](http://renz45.github.io/cs_console/)
+to try out a very basic javascript implementation.
 
 
 ##Dependancies:
