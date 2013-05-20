@@ -96,4 +96,9 @@ Currently there are two recipes available:
 * **no_cm** - Builds the console with only console javascript.
 
 ##Working on cs_console
-*under construction*
+If you want to do development on cs_console, you will need to start a simple
+rackup server that compiles assets on page reload so the coffeescript files can
+be worked on.
+
+Open a terminal and type `rackup` and visit: `http://localhost:9292/test/test.html`
+*The config.ru file holds the server code.*
