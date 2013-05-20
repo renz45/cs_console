@@ -53,7 +53,6 @@ loading it as part of the larger project.
 
 
 * **prompt** - This is the value of the prompt set in the editor.
-* **cancelHandle** - This callback is called when a command is canceled. This is currently not implemented.
 * **theme** - Set the code mirror theme, defaults to 'vibrant-ink'
 * **lineNumbers** - Enables line numbers, defaults to false
 

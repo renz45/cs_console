@@ -224,7 +224,6 @@ class window.CSConsole
   initCallbacks: (options)=>
     @commandValidate = options.commandValidate
     @commandHandle = options.commandHandle
-    @cancelHandle = options.cancelHandle
 
   # submit the corrent input, store the input in the command history
   submit: =>
