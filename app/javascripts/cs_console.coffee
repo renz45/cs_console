@@ -223,7 +223,7 @@ class window.CSConsole
   # Assign callbacks to instance variables
   initCallbacks: (options)=>
     @commandValidate = options.commandValidate
-    @commandHandle = options.commandHandle
+    @commandHandle = options.commandHandle 
 
   # submit the corrent input, store the input in the command history
   submit: =>
