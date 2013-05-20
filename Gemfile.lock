@@ -4,23 +4,13 @@ GEM
     active_support (3.0.0)
       activesupport (= 3.0.0)
     activesupport (3.0.0)
-    chunky_png (1.2.8)
     coderay (1.0.9)
     coffee-script (2.2.0)
       coffee-script-source
       execjs
     coffee-script-source (1.6.2)
-    compass (0.12.2)
-      chunky_png (~> 1.2)
-      fssm (>= 0.2.7)
-      sass (~> 3.1)
-    dotenv (0.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
-    foreman (0.63.0)
-      dotenv (>= 0.7)
-      thor (>= 0.13.6)
-    fssm (0.2.10)
     i18n (0.6.4)
     json (1.8.0)
     method_source (0.8.1)
@@ -48,8 +38,6 @@ PLATFORMS
 DEPENDENCIES
   active_support
   coffee-script
-  compass
-  foreman
   i18n
   pry
   rake-pipeline
