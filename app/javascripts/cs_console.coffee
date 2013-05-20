@@ -116,7 +116,7 @@ class window.CSConsole
     keyActions = new KeyActions(@options)
 
     @console = window.CodeMirror(el, {
-      value: @options.initialValue || ''
+      value: @options.initialValue || @options.prompt
       mode:
         name: @options.syntax
         useCPP: true
@@ -177,6 +177,8 @@ class window.CSConsole
     if @options.welcomeMessage
       @showWelcomeMessage()
       @moveInputForward()
+    else
+
 
     # Autofocus the input if the autoFocus option is set
     if @options.autoFocus
@@ -227,7 +229,7 @@ class window.CSConsole
   # submit the corrent input, store the input in the command history
   submit: =>
     input = @getAllInput()
-    if @options.commandValidate(input) && !@submitInProgress
+    if ( @options.commandValidate == undefined || @options.commandValidate(input) ) && !@submitInProgress
       @nonReactingNewline()
       @submitInProgress = true
       @submitHistory.push(input)
