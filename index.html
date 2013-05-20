@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="us">
+  <head>
+    <meta charset="utf-8">
+    <title>Demo page</title>
+    <link href="cs_console.css" rel="stylesheet">
+    <script src="cs_console.js"></script>
+  </head>
+  <body>
+    <div id='console'></div>
+
+    <script>
+      var el = document.getElementById('console');
+      window.cs_console = new CSConsole(el,{
+        prompt: '> ',
+        historyLabel: 'cs-console-demo',
+        syntax: 'javascript',
+        welcomeMessage: 'Welcome to the cs console demo, type some javascript',
+        autoFocus: true,
+        commandValidate: function(line){
+          return line.length > 0
+        },
+        commandHandle: function(line, report, prompt){
+          /*
+            We aren't doing anything with the console input.
+
+            This is where you might send the input to the server and get a response
+            for example, an irb response or you could eval javascript here.
+          */
+          try {
+            var content = eval.call(this,line)
+          } catch(e){
+            var content = e.message
+          }
+          report({content: (content ? content.toString() : '')})
+        }
+      });
+    </script>
+  </body>
+</html>
