@@ -234,8 +234,7 @@
 
     CSConsole.prototype.initCallbacks = function(options) {
       this.commandValidate = options.commandValidate;
-      this.commandHandle = options.commandHandle;
-      return this.cancelHandle = options.cancelHandle;
+      return this.commandHandle = options.commandHandle;
     };
 
     CSConsole.prototype.submit = function() {

@@ -56,7 +56,7 @@ loading it as part of the larger project.
 * **theme** - Set the code mirror theme, defaults to 'vibrant-ink'
 * **lineNumbers** - Enables line numbers, defaults to false
 
-##Methods
+##API Methods
 * **setValue(string)** - Set the value of the input line
 * **getValue** - Get the value of the input, this includes multiline input
 * **setPrompt(string)** - Set the prompt
