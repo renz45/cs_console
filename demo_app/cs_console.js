@@ -6107,7 +6107,7 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
       el.className += " cs-console cs-console-height cs-console-width";
       keyActions = new KeyActions(this.options);
       this.console = window.CodeMirror(el, {
-        value: this.options.initialValue || '',
+        value: this.options.initialValue || this.options.prompt,
         mode: {
           name: this.options.syntax,
           useCPP: true
@@ -6163,6 +6163,8 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
       if (this.options.welcomeMessage) {
         this.showWelcomeMessage();
         this.moveInputForward();
+      } else {
+
       }
       if (this.options.autoFocus) {
         return setTimeout((function() {
@@ -6209,15 +6211,14 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
 
     CSConsole.prototype.initCallbacks = function(options) {
       this.commandValidate = options.commandValidate;
-      this.commandHandle = options.commandHandle;
-      return this.cancelHandle = options.cancelHandle;
+      return this.commandHandle = options.commandHandle;
     };
 
     CSConsole.prototype.submit = function() {
       var input;
 
       input = this.getAllInput();
-      if (this.options.commandValidate(input) && !this.submitInProgress) {
+      if ((this.options.commandValidate === void 0 || this.options.commandValidate(input)) && !this.submitInProgress) {
         this.nonReactingNewline();
         this.submitInProgress = true;
         this.submitHistory.push(input);
