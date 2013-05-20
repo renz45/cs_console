@@ -95,10 +95,10 @@ Currently there are two recipes available:
 * **all** - Builds the console with all code mirror javascript. This option will prompt you do enter a list of modes and a theme.
 * **no_cm** - Builds the console with only console javascript.
 
-##Working on cs_console
+##cs_console Development
 If you want to do development on cs_console, you will need to start a simple
 rackup server that compiles assets on page reload so the coffeescript files can
-be worked on.
+be tested.
 
 Open a terminal and type `rackup` and visit: `http://localhost:9292/test/test.html`
 *The config.ru file holds the server code.*
