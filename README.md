@@ -102,3 +102,8 @@ be tested.
 
 Open a terminal and type `rackup` and visit: `http://localhost:9292/test/test.html`
 *The config.ru file holds the server code.*
+
+## Notes
+This repo is a work in progress, the initial prototype console has seen real usage
+in courses, but needs tests and a good refactoring. I'll be working on these 2 goals
+over the next week or two (5/20/2013).
