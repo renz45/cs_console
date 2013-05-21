@@ -16,20 +16,19 @@ module CSConsole
           output 'test/resources'
 
           # Javascript files
-          input 'app' do
+          input '.' do
             match '**/*.coffee' do
               coffee_script
             end
 
-            match 'javascripts/**/*.js' do
+            match 'app/javascripts/**/*.js' do
               concat 'cs_console.js'
               # uglify
             end
 
-            # match 'vendor/javascripts/*.js' do
-            #   concat 'cs_console.js'
-            #   # uglify
-            # end
+            match 'test/*.js' do
+              concat 'compiled_tests.js'
+            end
           end
 
           # CSS Files
