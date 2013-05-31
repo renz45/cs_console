@@ -91,6 +91,8 @@ class window.CSConsole
     for widget in @outputWidgets
       @console.removeLineWidget(widget)
 
+    @outputWidgets = []
+
     if @options.welcomeMessage && welcomeMessage
       @showWelcomeMessage()
       @moveInputForward()
