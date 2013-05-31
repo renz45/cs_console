@@ -7,11 +7,13 @@ run Proc.new { |env|
   path = Rack::Utils.unescape(env['PATH_INFO'])
   use Rack::Static, urls: ["/resources"], root: "test"
 
-  # Only compile the assets when the test.html is requested
+  # Only compile the assets when the test.html is requested, this is a bit crude
+  # but it speeds up page loads a lot for tests
   if path =~ /test\.html/
     Rake::Pipeline::Project.new.build(&CSConsole::Recipes::Test.build).invoke
     FileUtils.rm_rf(File.expand_path('./tmp'))
   end
+
   mime_types = {
     '.js' => 'javascript',
     '.css' => 'css',
