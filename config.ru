@@ -6,7 +6,12 @@ run Proc.new { |env|
   # Extract the requested path from the request
   path = Rack::Utils.unescape(env['PATH_INFO'])
   use Rack::Static, urls: ["/resources"], root: "test"
-  Rake::Pipeline::Project.new.build(&CSConsole::Recipes::Test.build).invoke
+
+  # Only compile the assets when the test.html is requested
+  if path =~ /test\.html/
+    Rake::Pipeline::Project.new.build(&CSConsole::Recipes::Test.build).invoke
+    FileUtils.rm_rf(File.expand_path('./tmp'))
+  end
   mime_types = {
     '.js' => 'javascript',
     '.css' => 'css',
