@@ -156,7 +156,6 @@
     appendedInput = 'APPENDTOYOU';
     csConsole.setValue(inputValue);
     csConsole.appendToInput(appendedInput);
-    debugger;
     return ok(currentLine().match(new RegExp(inputValue + appendedInput)));
   });
 
