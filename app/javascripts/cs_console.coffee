@@ -58,6 +58,7 @@ class window.CSConsole
 
   # Sets the prompt
   setPrompt: (prompt)=>
+    @console.setLine(@currentLine, @console.getLine(@currentLine).replace(new RegExp(@options.prompt), prompt))
     @options.prompt = prompt
 
   # Focus the typer input box
