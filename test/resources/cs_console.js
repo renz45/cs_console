@@ -66,6 +66,7 @@
     };
 
     CSConsole.prototype.setPrompt = function(prompt) {
+      this.console.setLine(this.currentLine, this.console.getLine(this.currentLine).replace(new RegExp(this.options.prompt), prompt));
       return this.options.prompt = prompt;
     };
 
@@ -107,6 +108,7 @@
         widget = _ref[_i];
         this.console.removeLineWidget(widget);
       }
+      this.outputWidgets = [];
       if (this.options.welcomeMessage && welcomeMessage) {
         this.showWelcomeMessage();
         this.moveInputForward();

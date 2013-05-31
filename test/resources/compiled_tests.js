@@ -1,70 +1,163 @@
 (function() {
-  module('Public API: #setValue');
+  var cm, commandHandle, commandValidate, consoleOptions, csConsole, currentLine, inputValue, setup;
+
+  cm = null;
+
+  csConsole = null;
+
+  inputValue = '';
+
+  consoleOptions = {
+    commandHandle: commandHandle = function() {},
+    commandValidate: commandValidate = function(line) {
+      return true;
+    },
+    prompt: '> '
+  };
+
+  setup = function() {
+    csConsole = createConsole(consoleOptions);
+    csConsole.reset();
+    cm = csConsole.innerConsole();
+    return inputValue = 'hello Worldy';
+  };
+
+  currentLine = function() {
+    return cm.getLine(cm.lineCount() - 1);
+  };
+
+  module('Public API: #setValue', {
+    setup: setup
+  });
 
   test('it sets the value of the input line', function() {
-    var callbackCalled, cm, commandValidate, cs_console, inputValue;
-
-    callbackCalled = false;
-    commandValidate = function() {
-      return callbackCalled = true;
-    };
-    cs_console = createConsole({
-      commandValidate: commandValidate
-    });
-    cm = cs_console.innerConsole();
-    inputValue = 'hello worldy';
-    cs_console.setValue(inputValue);
-    return ok(cm.getLine(cm.lineCount() - 1).match(new RegExp(inputValue)));
+    csConsole.setValue(inputValue);
+    return ok(currentLine().match(new RegExp(inputValue)));
   });
 
   test('it sets the multi-line value of the input line', function() {
-    var callbackCalled, cm, commandValidate, cs_console, inputValue;
-
-    callbackCalled = false;
-    commandValidate = function() {
-      return callbackCalled = true;
-    };
-    cs_console = createConsole({
-      commandValidate: commandValidate
-    });
-    cm = cs_console.innerConsole();
     inputValue = 'hello worldy\nthis is\nmulti-line';
-    cs_console.setValue(inputValue);
+    csConsole.setValue(inputValue);
     return ok(cm.getValue().match(new RegExp(inputValue)));
   });
 
-  module('Public API: #getValue');
+  module('Public API: #getValue', {
+    setup: setup
+  });
 
   test('it returns the value of the input line', function() {
-    var callbackCalled, cm, commandValidate, cs_console, inputValue;
-
-    callbackCalled = false;
-    commandValidate = function() {
-      return callbackCalled = true;
-    };
-    cs_console = createConsole({
-      commandValidate: commandValidate
-    });
-    cm = cs_console.innerConsole();
-    inputValue = 'hello worldy';
     cm.setLine(cm.lineCount() - 1, "> " + inputValue);
-    return equal(cs_console.getValue(), inputValue);
+    return equal(csConsole.getValue(), inputValue);
   });
 
   test('it returns the multi-line value of the input line', function() {
-    var callbackCalled, cm, commandValidate, cs_console, inputValue;
-
-    callbackCalled = false;
-    commandValidate = function() {
-      return callbackCalled = true;
-    };
-    cs_console = createConsole({
-      commandValidate: commandValidate
-    });
-    cm = cs_console.innerConsole();
     inputValue = 'hello worldy\nthis is\nmulti-line';
     cm.setLine(cm.lineCount() - 1, "> " + inputValue);
-    return equal(cs_console.getValue(), inputValue);
+    return equal(csConsole.getValue(), inputValue);
+  });
+
+  module('Public API: #setPrompt', {
+    setup: setup
+  });
+
+  test('it sets the prompt of the editor', function() {
+    var newPrompt;
+
+    newPrompt = "<< ";
+    csConsole.setValue(inputValue);
+    ok(currentLine().match(new RegExp("^" + consoleOptions.prompt + inputValue)));
+    csConsole.setPrompt(newPrompt);
+    return ok(currentLine().match(new RegExp("^" + newPrompt + inputValue)));
+  });
+
+  module('Public API: #reset', {
+    setup: setup
+  });
+
+  test('it should clear the console', function() {
+    csConsole.commandHandle = function(line, responder, prompt) {
+      return responder({
+        content: line
+      });
+    };
+    csConsole.setValue(inputValue);
+    csConsole.submit();
+    csConsole.setValue(inputValue);
+    ok(csConsole.outputWidgets.length > 0);
+    csConsole.reset();
+    ok(csConsole.outputWidgets.length === 0);
+    return ok(csConsole.getValue().length === 0);
+  });
+
+  test('it should clear the console and show the welcome message if available', function() {
+    csConsole.commandHandle = function(line, responder, prompt) {
+      return responder({
+        content: line
+      });
+    };
+    csConsole.options.welcomeMessage = "I welcome you";
+    csConsole.setValue(inputValue);
+    csConsole.submit();
+    csConsole.setValue(inputValue);
+    ok(csConsole.outputWidgets.length > 0);
+    csConsole.reset();
+    ok(csConsole.outputWidgets.length === 0);
+    ok(csConsole.getValue().length === 0);
+    return ok(cm.getValue().match(new RegExp(csConsole.options.welcomeMessage)));
+  });
+
+  test('it should clear the console and not show the welcome message if false is passed to reset(false)', function() {
+    csConsole.commandHandle = function(line, responder, prompt) {
+      return responder({
+        content: line
+      });
+    };
+    csConsole.options.welcomeMessage = "I welcome you";
+    csConsole.setValue(inputValue);
+    csConsole.submit();
+    csConsole.setValue(inputValue);
+    ok(csConsole.outputWidgets.length > 0);
+    csConsole.reset(false);
+    ok(csConsole.outputWidgets.length === 0);
+    ok(csConsole.getValue().length === 0);
+    return ok(!cm.getValue().match(new RegExp(csConsole.options.welcomeMessage)));
+  });
+
+  module('Public API: #buildWidget', {
+    setup: setup
+  });
+
+  test('it creates the specified widget', function() {
+    var widgetClass, widgetContent;
+
+    csConsole.commandHandle = function(line, responder, prompt) {
+      return responder(false);
+    };
+    widgetContent = 'Widget content!';
+    widgetClass = 'widget-class-yo';
+    csConsole.setValue(inputValue);
+    csConsole.submit();
+    csConsole.buildWidget(0, {
+      content: widgetContent,
+      className: widgetClass
+    });
+    ok(csConsole.outputWidgets[0].node.className.match(new RegExp(widgetClass)));
+    ok(csConsole.outputWidgets[0].node.innerText.match(new RegExp(widgetContent)));
+    return ok(csConsole.outputWidgets.length > 0);
+  });
+
+  module('Public API: #appendToInput', {
+    setup: setup
+  });
+
+  test('it appends to the input field', function() {
+    var appendedInput;
+
+    appendedInput = 'APPENDTOYOU';
+    csConsole.setValue(inputValue);
+    csConsole.appendToInput(appendedInput);
+    debugger;
+    return ok(currentLine().match(new RegExp(inputValue + appendedInput)));
   });
 
 }).call(this);
