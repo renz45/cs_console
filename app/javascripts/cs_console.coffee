@@ -325,7 +325,7 @@ class window.CSConsole
     message = message.replace(/^\s/, '')
 
     message = "<br/>#{message}"
-    message = message.replace(/\n/g, '<br/>')
+    message = message.replace(/\[K\n|\n/g, '<br/>')
 
     @addColors(message)
 
