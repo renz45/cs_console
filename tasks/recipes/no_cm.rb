@@ -17,15 +17,19 @@ module CSConsole
         Proc.new do
           output 'compiled'
 
-          input 'app/javascripts' do
+          input 'app' do
             match '**/*.coffee' do
               coffee_script
             end
 
-            match '**/*.js' do
+            match 'javascripts/**/*.js' do
               # minispade
               concat 'cs_console.js'
               # uglify
+            end
+
+            match 'vendor/javascripts/ansi_to_html.js' do
+              concat 'cs_console.js'
             end
           end
 

@@ -325,33 +325,13 @@ class window.CSConsole
     message = message.replace(/^\s/, '')
 
     message = "<br/>#{message}"
-    message = message.replace(/\[K\n|\n/g, '<br/>')
 
     @addColors(message)
 
   # Replace ansi terminal color codes with spaces styled for the appropriate colors
   addColors: (message)=>
-    colors =
-      30: 'black'
-      31: 'red'
-      32: 'green'
-      33: 'yellow'
-      34: 'blue'
-      35: 'purple'
-      36: 'cyan'
-      37: 'white'
-
-    for colorCode in Object.keys(colors)
-      span = "<span style='color:#{colors[colorCode]}'>"
-      message = message.replace(new RegExp("\\[#{colorCode}m", 'g'), span)
-
-    message.replace(/\[m<br\s*\/>/g, '</span><br/>')
-           .replace(/\[m\s/g, '</span> ')
-           .replace(/\033\[39m/g, '</span>')
-           .replace(/\033\[1m/g, '<b>')
-           .replace(/\033\[22m/g, '</b>')
-           .replace(/\033\[3m/g, '<i>')
-           .replace(/\033\[23m/g, '</i>')
+    filter = window.ansi_to_html()
+    filter.toHtml(message)
 
   # Move the input forward and lock the previous lines to editing
   moveInputForward: =>
