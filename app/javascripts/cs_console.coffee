@@ -330,7 +330,7 @@ class window.CSConsole
 
   # Replace ansi terminal color codes with spaces styled for the appropriate colors
   addColors: (message)=>
-    filter = window.ansi_to_html()
+    filter = new window.ansi_to_html()
     filter.toHtml(message)
 
   # Move the input forward and lock the previous lines to editing
