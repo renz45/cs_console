@@ -303,6 +303,10 @@
       return this.submitInProgress = false;
     };
 
+    CSConsole.prototype.htmlEscape = function(string) {
+      return ('' + string).replace(/&(?!\w+;|#\d+;|#x[\da-f]+;)/gi, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/\//g, '&#x2F;');
+    };
+
     CSConsole.prototype.buildWidget = function(lineNumber, responseLine) {
       var widgetContent, widgetElement, widgetOptions;
 
@@ -311,7 +315,7 @@
         widgetElement = widgetContent;
       } else {
         widgetElement = document.createElement('div');
-        widgetElement.innerHTML = this.formatWidgetElementText(widgetContent);
+        widgetElement.innerHTML = this.formatWidgetElementText(this.htmlEscape(widgetContent));
         widgetElement.className = "cs-console-output-element";
         widgetElement.style.whiteSpace = 'pre-wrap';
       }
@@ -336,30 +340,14 @@
     CSConsole.prototype.formatWidgetElementText = function(message) {
       message = message.replace(/^\s/, '');
       message = "<br/>" + message;
-      message = message.replace(/\n/g, '<br/>');
       return this.addColors(message);
     };
 
     CSConsole.prototype.addColors = function(message) {
-      var colorCode, colors, span, _i, _len, _ref;
+      var filter;
 
-      colors = {
-        30: 'black',
-        31: 'red',
-        32: 'green',
-        33: 'yellow',
-        34: 'blue',
-        35: 'purple',
-        36: 'cyan',
-        37: 'white'
-      };
-      _ref = Object.keys(colors);
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        colorCode = _ref[_i];
-        span = "<span style='color:" + colors[colorCode] + "'>";
-        message = message.replace(new RegExp("\\[" + colorCode + "m", 'g'), span);
-      }
-      return message.replace(/\[m<br\s*\/>/g, '</span><br/>').replace(/\[m\s/g, '</span> ').replace(/\033\[39m/g, '</span>').replace(/\033\[1m/g, '<b>').replace(/\033\[22m/g, '</b>').replace(/\033\[3m/g, '<i>').replace(/\033\[23m/g, '</i>');
+      filter = new window.ansi_to_html();
+      return filter.toHtml(message);
     };
 
     CSConsole.prototype.moveInputForward = function() {

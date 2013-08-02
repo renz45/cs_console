@@ -290,6 +290,14 @@ class window.CSConsole
     @moveInputForward()
     @submitInProgress = false
 
+  htmlEscape: (string)->
+    (''+string).replace(/&(?!\w+;|#\d+;|#x[\da-f]+;)/gi, '&amp;')
+               .replace(/</g, '&lt;')
+               .replace(/>/g, '&gt;')
+               .replace(/"/g, '&quot;')
+               .replace(/'/g, '&#x27;')
+               .replace(/\//g,'&#x2F;')
+
   # Build a line widget containing the output given by the responseObject
   buildWidget: (lineNumber, responseLine)=>
     widgetContent = if responseLine then responseLine.content else ''
@@ -298,7 +306,7 @@ class window.CSConsole
       widgetElement = widgetContent
     else
       widgetElement = document.createElement('div')
-      widgetElement.innerHTML = @formatWidgetElementText(widgetContent)
+      widgetElement.innerHTML = @formatWidgetElementText(@htmlEscape(widgetContent))
       widgetElement.className = "cs-console-output-element"
       widgetElement.style.whiteSpace = 'pre-wrap'
 
