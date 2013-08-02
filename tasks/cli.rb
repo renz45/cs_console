@@ -24,6 +24,8 @@ module CSConsole
         project.invoke
         puts "Adding license to compiled files..."
         add_license_to_files('./compiled/cs_console.css', './compiled/cs_console.js')
+        puts "Adding version to compiled files..."
+        add_version_to_files('./compiled/cs_console.css', './compiled/cs_console.js')
         puts 'Cleaning up temporary files...'
         clean_up_temp_files
         puts 'Finished! Compiled files can be found in /compiled'
@@ -52,12 +54,22 @@ module CSConsole
     end
 
     def add_license_to_files(*file_paths)
-      licenseContent = File.read(File.expand_path('./LICENSE'))
+      license_content = File.read(File.expand_path('./LICENSE'))
 
       file_paths.each do |file_path|
-        compiledFile = File.expand_path(file_path)
-        compiledFileContent = File.read(compiledFile)
-        File.write(compiledFile, "/*\n#{licenseContent}\n*/\n\n#{compiledFileContent}")
+        compiled_file = File.expand_path(file_path)
+        compiled_fileContent = File.read(compiled_file)
+        File.write(compiled_file, "/*\n#{license_content}\n*/\n\n#{compiled_fileContent}")
+      end
+    end
+
+    def add_version_to_files(*file_paths)
+      version_content = File.read(File.expand_path('./Version'))
+
+      file_paths.each do |file_path|
+        compiled_file = File.expand_path(file_path)
+        compiled_fileContent = File.read(compiled_file)
+        File.write(compiled_file, "/*\nCS Console Version: #{version_content}\n*/\n\n#{compiled_fileContent}")
       end
     end
   end
