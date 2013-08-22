@@ -244,7 +244,6 @@
 
       input = this.getAllInput();
       if ((this.options.commandValidate === void 0 || this.options.commandValidate(input)) && !this.submitInProgress) {
-        this.nonReactingNewline();
         this.submitInProgress = true;
         this.submitHistory.push(input);
         this.submitHistory.resetIndex();
@@ -298,7 +297,10 @@
       } else {
         this.buildWidget(lineNumber, responseLines);
       }
-      this.buildWidget(lineNumber, '');
+      this.buildWidget(lineNumber, {
+        content: document.createElement('p'),
+        className: 'cs-console-output-spacer bottom'
+      });
       this.moveInputForward();
       return this.submitInProgress = false;
     };
@@ -339,7 +341,7 @@
 
     CSConsole.prototype.formatWidgetElementText = function(message) {
       message = message.replace(/^\s/, '');
-      message = "<br/>" + message;
+      message = "<p class='cs-console-output-spacer top'></p>" + message;
       return this.addColors(message);
     };
 
