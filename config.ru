@@ -9,7 +9,7 @@ run Proc.new { |env|
 
   # Only compile the assets when the test.html is requested, this is a bit crude
   # but it speeds up page loads a lot for tests
-  if path =~ /test\.html/
+  if path =~ /test\.html/ || path =~ /demo\.html/
     Rake::Pipeline::Project.new.build(&CSConsole::Recipes::Test.build).invoke
     FileUtils.rm_rf(File.expand_path('./tmp'))
   end
