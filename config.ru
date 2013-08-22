@@ -1,16 +1,21 @@
-require File.expand_path('./tasks/recipes/test')
+# require File.expand_path('./tasks/recipes/test')
+require File.expand_path('./tasks/recipes/demo')
 require "rake-pipeline"
 require 'rake-pipeline-web-filters'
 
 run Proc.new { |env|
   # Extract the requested path from the request
   path = Rack::Utils.unescape(env['PATH_INFO'])
-  use Rack::Static, urls: ["/resources"], root: "test"
 
   # Only compile the assets when the test.html is requested, this is a bit crude
   # but it speeds up page loads a lot for tests
-  if path =~ /test\.html/ || path =~ /demo\.html/
+  if path =~ /test\.html/
+    # use Rack::Static, urls: ["/resources"], root: "test"
     Rake::Pipeline::Project.new.build(&CSConsole::Recipes::Test.build).invoke
+    FileUtils.rm_rf(File.expand_path('./tmp'))
+  elsif path =~ /demo\.html/
+    # use Rack::Static, urls: ["/demo_app"], root: "demo_app"
+    Rake::Pipeline::Project.new.build(&CSConsole::Recipes::Demo.build).invoke
     FileUtils.rm_rf(File.expand_path('./tmp'))
   end
 
