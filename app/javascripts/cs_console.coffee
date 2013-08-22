@@ -232,7 +232,6 @@ class window.CSConsole
   submit: =>
     input = @getAllInput()
     if ( @options.commandValidate == undefined || @options.commandValidate(input) ) && !@submitInProgress
-      @nonReactingNewline()
       @submitInProgress = true
       @submitHistory.push(input)
       @submitHistory.resetIndex()
@@ -286,7 +285,7 @@ class window.CSConsole
     else
       @buildWidget(lineNumber, responseLines)
 
-    @buildWidget(lineNumber, '')
+    @buildWidget(lineNumber, {content: document.createElement('p'), className: 'cs-console-output-spacer bottom'})
     @moveInputForward()
     @submitInProgress = false
 
@@ -316,6 +315,7 @@ class window.CSConsole
     widgetOptions =
       coverGutter: false
       noHScroll: true
+
     @outputWidgets.push(@console.addLineWidget(lineNumber, widgetElement, widgetOptions))
 
     @console.scrollIntoView({line: @console.lineCount(), ch: 0})
@@ -332,7 +332,7 @@ class window.CSConsole
     # line, this is a quick fix
     message = message.replace(/^\s/, '')
 
-    message = "<br/>#{message}"
+    message = "<p class='cs-console-output-spacer top'></p>#{message}"
 
     @addColors(message)
 
@@ -354,9 +354,6 @@ class window.CSConsole
   # This is needed since the keymap won't allow you to disable some keys for some reason.
   noop: ->
     #pointing some keys here to disable them
-
-
-
 
   # This class contains key overrides that replace actions that might:
   #   - Allow the cursor to move back up a line
