@@ -95,6 +95,9 @@ Currently there are two recipes available:
 * **all** - Builds the console with all code mirror javascript. This option will prompt you do enter a list of modes and a theme.
 * **no_cm** - Builds the console with only console javascript.
 
+Example usage: `./bin/cs_console build -t no_cm`
+
+
 ##cs_console Development
 If you want to do development on cs_console, you will need to start a simple
 rackup server that compiles assets on page reload so the coffeescript files can
