@@ -26,6 +26,11 @@ module CSConsole
               # uglify
             end
 
+            match 'app/vendor/javascripts/codemirror/mode/javascript/*.js' do
+              concat 'cs_console.js'
+              # uglify
+            end
+
             match 'app/vendor/javascripts/*.js' do
               concat 'cs_console.js'
               # uglify
