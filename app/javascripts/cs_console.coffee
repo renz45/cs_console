@@ -180,8 +180,6 @@ class window.CSConsole
     if @options.welcomeMessage
       @showWelcomeMessage()
       @moveInputForward()
-    else
-
 
     # Autofocus the input if the autoFocus option is set
     if @options.autoFocus
@@ -216,7 +214,10 @@ class window.CSConsole
 
   # show the welcome message first when the console loads
   showWelcomeMessage: =>
-    @console.setValue("#{@options.welcomeMessage}\n")
+    # Set the initial input to a blank line so we can add a widget above it
+    @console.setValue("")
+    line = {content: @options.welcomeMessage}
+    @buildWidget(1, line, {above: true})
 
     # set the initial value if one exists
     if @options.initialValue
@@ -298,7 +299,7 @@ class window.CSConsole
                .replace(/\//g,'&#x2F;')
 
   # Build a line widget containing the output given by the responseObject
-  buildWidget: (lineNumber, responseLine)=>
+  buildWidget: (lineNumber, responseLine, widgetOptions = {})=>
     widgetContent = if responseLine then responseLine.content else ''
 
     if @isHtmlElement(widgetContent)
@@ -312,9 +313,11 @@ class window.CSConsole
     if responseLine?.className
       widgetElement.className += " #{responseLine.className}"
 
-    widgetOptions =
-      coverGutter: false
-      noHScroll: true
+    if Object.keys(widgetOptions).indexOf('coverGutter') < 0
+      widgetOptions.coverGutter = false
+
+    if Object.keys(widgetOptions).indexOf('noHScroll') < 0
+      widgetOptions.noHScroll = true
 
     @outputWidgets.push(@console.addLineWidget(lineNumber, widgetElement, widgetOptions))
 

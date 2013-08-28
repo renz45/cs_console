@@ -6788,8 +6788,6 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
       if (this.options.welcomeMessage) {
         this.showWelcomeMessage();
         this.moveInputForward();
-      } else {
-
       }
       if (this.options.autoFocus) {
         return setTimeout((function() {
@@ -6828,7 +6826,15 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
     };
 
     CSConsole.prototype.showWelcomeMessage = function() {
-      this.console.setValue("" + this.options.welcomeMessage + "\n");
+      var line;
+
+      this.console.setValue("");
+      line = {
+        content: "" + this.options.welcomeMessage
+      };
+      this.buildWidget(1, line, {
+        above: true
+      });
       if (this.options.initialValue) {
         return this.setValue(this.options.initialValue);
       }
@@ -6909,9 +6915,12 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
       return ('' + string).replace(/&(?!\w+;|#\d+;|#x[\da-f]+;)/gi, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/\//g, '&#x2F;');
     };
 
-    CSConsole.prototype.buildWidget = function(lineNumber, responseLine) {
-      var widgetContent, widgetElement, widgetOptions;
+    CSConsole.prototype.buildWidget = function(lineNumber, responseLine, widgetOptions) {
+      var widgetContent, widgetElement;
 
+      if (widgetOptions == null) {
+        widgetOptions = {};
+      }
       widgetContent = responseLine ? responseLine.content : '';
       if (this.isHtmlElement(widgetContent)) {
         widgetElement = widgetContent;
@@ -6924,10 +6933,12 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
       if (responseLine != null ? responseLine.className : void 0) {
         widgetElement.className += " " + responseLine.className;
       }
-      widgetOptions = {
-        coverGutter: false,
-        noHScroll: true
-      };
+      if (Object.keys(widgetOptions).indexOf('coverGutter') < 0) {
+        widgetOptions.coverGutter = false;
+      }
+      if (Object.keys(widgetOptions).indexOf('noHScroll') < 0) {
+        widgetOptions.noHScroll = true;
+      }
       this.outputWidgets.push(this.console.addLineWidget(lineNumber, widgetElement, widgetOptions));
       return this.console.scrollIntoView({
         line: this.console.lineCount(),
