@@ -426,7 +426,7 @@ class window.CSConsole
   # saves commands in local storage so history can be persisted between sessions.
   # A historyLabel option can be used to set a custom entry in local storage.
   class CSConsoleHistory
-    storage: ''
+    storage: {}
     currentIndex: 0
     historyLabel: 'cs-console-history'
     cachedHistory: []
