@@ -14,7 +14,7 @@ to try out a very basic javascript implementation.
 
 
 ##Dependancies:
-This console uses the Code Mirror 2 editor internally, so it and it's associated
+This console uses the Code Mirror 3 editor internally, so it and it's associated
 files are needed to make the console work. There are different build options that
 allow you to compile a version of the console without code mirror if you are already
 loading it as part of the larger project.
