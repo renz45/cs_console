@@ -8,6 +8,6 @@ group :development do
   gem 'sass'
   gem 'thor'
   gem 'pry'
-  gem 'active_support'
+  gem 'activesupport'
   gem 'i18n'
 end

@@ -1,8 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    active_support (3.0.0)
-      activesupport (= 3.0.0)
     activesupport (3.0.0)
     chunky_png (1.2.8)
     coderay (1.0.9)
@@ -42,7 +40,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_support
+  activesupport
   coffee-script
   compass
   i18n
