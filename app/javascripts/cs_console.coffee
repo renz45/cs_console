@@ -430,10 +430,14 @@ class window.CSConsole
     currentIndex: 0
     historyLabel: 'cs-console-history'
     cachedHistory: []
+    maxEntries: 25
     constructor: (options)->
       @options = options
       if @options.historyLabel
         @historyLabel = "cs-#{@options.historyLabel}-console-history"
+      
+      if @options.maxEntries
+        @maxEntries = options.maxHistoryEntries
 
       if @localStorageExists()
         @storage = window.localStorage
@@ -457,6 +461,12 @@ class window.CSConsole
       return if currentHistory[currentHistory.length - 1] == item
 
       currentHistory.push(item)
+      
+      # Truncate extra history
+      if currentHistory.length >= @maxEntries
+        startSlice = currentHistory.length - @maxEntries
+        currentHistory = currentHistory.slice(startSlice, currentHistory.length)
+      
       @cachedHistory = currentHistory
       @storage[@historyLabel] = JSON.stringify(currentHistory)
       @currentIndex = currentHistory.length - 1

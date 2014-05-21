@@ -7101,6 +7101,8 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
 
       CSConsoleHistory.prototype.cachedHistory = [];
 
+      CSConsoleHistory.prototype.maxEntries = 25;
+
       function CSConsoleHistory(options) {
         this.previousHistory = __bind(this.previousHistory, this);
         this.nextHistory = __bind(this.nextHistory, this);
@@ -7111,6 +7113,9 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
         this.options = options;
         if (this.options.historyLabel) {
           this.historyLabel = "cs-" + this.options.historyLabel + "-console-history";
+        }
+        if (this.options.maxEntries) {
+          this.maxEntries = options.maxEntries;
         }
         if (this.localStorageExists()) {
           this.storage = window.localStorage;
@@ -7134,7 +7139,7 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
       };
 
       CSConsoleHistory.prototype.push = function(item) {
-        var currentHistory;
+        var currentHistory, startSlice;
 
         if (!item) {
           return;
@@ -7144,6 +7149,10 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
           return;
         }
         currentHistory.push(item);
+        if (currentHistory.length >= this.maxEntries) {
+          startSlice = currentHistory.length - this.maxEntries;
+          currentHistory = currentHistory.slice(startSlice, currentHistory.length);
+        }
         this.cachedHistory = currentHistory;
         this.storage[this.historyLabel] = JSON.stringify(currentHistory);
         return this.currentIndex = currentHistory.length - 1;
