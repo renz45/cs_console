@@ -1,4 +1,4 @@
-# require File.expand_path('./tasks/recipes/test')
+require File.expand_path('./tasks/recipes/test')
 require File.expand_path('./tasks/recipes/demo')
 require "rake-pipeline"
 require 'rake-pipeline-web-filters'
