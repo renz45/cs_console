@@ -101,9 +101,9 @@
     csConsole.setValue(inputValue);
     ok(csConsole.outputWidgets.length > 0);
     csConsole.reset();
-    ok(csConsole.outputWidgets.length === 0);
+    ok(csConsole.outputWidgets.length === 1);
     ok(csConsole.getValue().length === 0);
-    return ok(cm.getValue().match(new RegExp(csConsole.options.welcomeMessage)));
+    return ok(csConsole.outputWidgets[0].node.innerText.match(new RegExp(csConsole.options.welcomeMessage)));
   });
 
   test('it should clear the console and not show the welcome message if false is passed to reset(false)', function() {
@@ -209,7 +209,7 @@
     var welcomeMessage = 'Hello, this is the console';
     var cs_console = createConsole({welcomeMessage: welcomeMessage});
     var cm = cs_console.innerConsole();
-    ok( cm.getLine(0).match(new RegExp(welcomeMessage)) );
+    ok( cs_console.outputWidgets[0].node.innerText.match(new RegExp(welcomeMessage)) );
   });
 
   test('setting autoFocus to true starts the console with focus', function(){

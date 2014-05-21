@@ -47,7 +47,7 @@
     var welcomeMessage = 'Hello, this is the console';
     var cs_console = createConsole({welcomeMessage: welcomeMessage});
     var cm = cs_console.innerConsole();
-    ok( cm.getLine(0).match(new RegExp(welcomeMessage)) );
+    ok( cs_console.outputWidgets[0].node.innerText.match(new RegExp(welcomeMessage)) );
   });
 
   test('setting autoFocus to true starts the console with focus', function(){

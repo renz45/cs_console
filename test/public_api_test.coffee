@@ -66,9 +66,10 @@ test 'it should clear the console and show the welcome message if available', ->
   csConsole.setValue(inputValue)
   ok csConsole.outputWidgets.length > 0
   csConsole.reset()
-  ok csConsole.outputWidgets.length == 0
+
+  ok csConsole.outputWidgets.length == 1
   ok csConsole.getValue().length == 0
-  ok cm.getValue().match(new RegExp(csConsole.options.welcomeMessage))
+  ok csConsole.outputWidgets[0].node.innerText.match(new RegExp(csConsole.options.welcomeMessage))
 
 test 'it should clear the console and not show the welcome message if false is passed to reset(false)', ->
   csConsole.commandHandle = (line, responder,prompt)->
@@ -104,5 +105,3 @@ test 'it appends to the input field', ->
   csConsole.setValue(inputValue)
   csConsole.appendToInput(appendedInput)
   ok currentLine().match(new RegExp(inputValue + appendedInput))
-
-
