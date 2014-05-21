@@ -35,6 +35,7 @@ loading it as part of the larger project.
 * **autoFocus** - Whether or not the console should be focused on page load.
 * **syntax** - set the syntax of the console, useful for ruby irb or javascript consoles.
 * **commandValidate** - Callback function for validating a command before it's submitted. This callback should return a boolean
+* **maxHistoryEntries** - Limits the amount of history stored for the current history label
 * **commandHandle** - Callback function for handling a command. This callback is passed the following arguments:
     - ***inputContent*** - This is the content of the input
     - ***responder*** - The responder is used to send some sort of a response to the console. This can be an asyncronous response. The className sets a class name on the html element of the output widget. The content can be either a string, or a valid HTMLElement. *Note, this is not a jQuery object*.
