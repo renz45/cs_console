@@ -320,8 +320,11 @@ class window.CSConsole
       widgetOptions.noHScroll = true
 
     @outputWidgets.push(@console.addLineWidget(lineNumber, widgetElement, widgetOptions))
-
-    @console.scrollIntoView({line: @console.lineCount(), ch: 0})
+    
+    setTimeout =>
+      @console.scrollIntoView({line: @console.lineCount() - 1, ch: 0})
+    ,
+      100
 
   # Test if the given object is an HTMLElement
   isHtmlElement: (obj)->

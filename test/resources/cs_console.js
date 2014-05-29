@@ -316,7 +316,8 @@
     };
 
     CSConsole.prototype.buildWidget = function(lineNumber, responseLine, widgetOptions) {
-      var widgetContent, widgetElement;
+      var widgetContent, widgetElement,
+        _this = this;
 
       if (widgetOptions == null) {
         widgetOptions = {};
@@ -340,10 +341,12 @@
         widgetOptions.noHScroll = true;
       }
       this.outputWidgets.push(this.console.addLineWidget(lineNumber, widgetElement, widgetOptions));
-      return this.console.scrollIntoView({
-        line: this.console.lineCount(),
-        ch: 0
-      });
+      return setTimeout(function() {
+        return _this.console.scrollIntoView({
+          line: _this.console.lineCount() - 1,
+          ch: 0
+        });
+      }, 100);
     };
 
     CSConsole.prototype.isHtmlElement = function(obj) {
@@ -473,7 +476,7 @@
 
       CSConsoleHistory.prototype.cachedHistory = [];
 
-      CSConsoleHistory.prototype.maxEntries = 2;
+      CSConsoleHistory.prototype.maxEntries = 25;
 
       function CSConsoleHistory(options) {
         this.previousHistory = __bind(this.previousHistory, this);
@@ -487,7 +490,7 @@
           this.historyLabel = "cs-" + this.options.historyLabel + "-console-history";
         }
         if (this.options.maxEntries) {
-          this.maxEntries = options.maxEntries;
+          this.maxEntries = options.maxHistoryEntries;
         }
         if (this.localStorageExists()) {
           this.storage = window.localStorage;
@@ -521,8 +524,8 @@
           return;
         }
         currentHistory.push(item);
-        if (currentHistory.length > this.maxEntries) {
-          startSlice = currentHistory.length - this.maxEntries - 1;
+        if (currentHistory.length >= this.maxEntries) {
+          startSlice = currentHistory.length - this.maxEntries;
           currentHistory = currentHistory.slice(startSlice, currentHistory.length);
         }
         this.cachedHistory = currentHistory;
