@@ -119,7 +119,6 @@ class window.CSConsole
     keyActions = new KeyActions(@options)
 
     @console = window.CodeMirror(el, {
-      value: @options.initialValue || @options.prompt
       mode:
         name: @options.syntax
         useCPP: true
@@ -180,6 +179,11 @@ class window.CSConsole
     if @options.welcomeMessage
       @showWelcomeMessage()
       @moveInputForward()
+    
+    # set the initial value if one exists
+    if @options.initialValue
+      @setValue(@options.initialValue)
+      @moveInputForward()
 
     # Autofocus the input if the autoFocus option is set
     if @options.autoFocus
@@ -218,10 +222,6 @@ class window.CSConsole
     @console.setValue("")
     line = {content: @options.welcomeMessage}
     @buildWidget(1, line, {above: true})
-
-    # set the initial value if one exists
-    if @options.initialValue
-      @setValue(@options.initialValue)
 
 
   # Assign callbacks to instance variables
