@@ -105,4 +105,7 @@ rackup server that compiles assets on page reload so the coffeescript files can
 be tested.
 
 Open a terminal and type `rackup` and visit: `http://localhost:9292/test/test.html`
+You can also visit `http://localhost:9292/demo_app/demo.html` to run the demo app, running
+the demo in this manner recompiles all the files every time the page is loaded, which
+is useful for development.
 *The config.ru file holds the server code.*
