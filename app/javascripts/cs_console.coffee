@@ -198,7 +198,6 @@ class window.CSConsole
   # This will ensure that the cursor is only typing into the bottom most line
   # no matter where it's located at the start of typing.
   focusInput: (cm, evt)=>
-    return false if evt.metaKey || evt.altKey || evt.ctrlKey || evt.shiftKey
     cursorPos = @console.getCursor()
     if cursorPos.line == @lineNumber()
       @storedCursorPosition = @console.getCursor()
