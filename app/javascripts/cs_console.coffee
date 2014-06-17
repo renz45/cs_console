@@ -191,6 +191,8 @@ class window.CSConsole
         @console.getInputField().focus()
       ), 10
 
+    @moveInputForward()
+
 
   # This method is called whenever a key event is fired within code mirror.
   # This will ensure that the cursor is only typing into the bottom most line
