@@ -178,7 +178,6 @@ class window.CSConsole
 
     if @options.welcomeMessage
       @showWelcomeMessage()
-      @moveInputForward()
     
     # set the initial value if one exists
     if @options.initialValue
