@@ -1,0 +1,11 @@
+{
+  "name": "cs_console",
+  "version": "1.1.1",
+  "main": "compiled/cs_console.js",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {},
+  "devDependencies": {}
+}
