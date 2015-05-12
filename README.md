@@ -13,7 +13,7 @@ functionality. You can also visit the [demo page](http://renz45.github.io/cs_con
 to try out a very basic javascript implementation.
 
 
-##Dependancies:
+##Dependencies:
 This console uses the Code Mirror 3 editor internally, so it and it's associated
 files are needed to make the console work. There are different build options that
 allow you to compile a version of the console without code mirror if you are already
