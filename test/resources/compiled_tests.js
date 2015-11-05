@@ -1,5 +1,5 @@
 (function() {
-  var cm, commandHandle, commandValidate, consoleOptions, csConsole, currentLine, inputValue, setup;
+  var cm, commandHandle, commandValidate, consoleOptions, csConsole, currentLine, inputValue, setLine, setup;
 
   cm = null;
 
@@ -23,7 +23,20 @@
   };
 
   currentLine = function() {
-    return cm.getLine(cm.lineCount() - 1);
+    return cm.doc.getLine(cm.lineCount() - 1);
+  };
+
+  setLine = function(lineNumber, content) {
+    var lineContent;
+
+    lineContent = cm.doc.getLine(lineNumber);
+    return cm.doc.replaceRange(content, {
+      line: lineNumber,
+      ch: 1
+    }, {
+      line: lineNumber,
+      ch: lineContent.length
+    });
   };
 
   module('Public API: #setValue', {
@@ -46,13 +59,13 @@
   });
 
   test('it returns the value of the input line', function() {
-    cm.setLine(cm.lineCount() - 1, "> " + inputValue);
+    setLine(cm.lineCount() - 1, "> " + inputValue);
     return equal(csConsole.getValue(), inputValue);
   });
 
   test('it returns the multi-line value of the input line', function() {
     inputValue = 'hello worldy\nthis is\nmulti-line';
-    cm.setLine(cm.lineCount() - 1, "> " + inputValue);
+    setLine(cm.lineCount() - 1, "> " + inputValue);
     return equal(csConsole.getValue(), inputValue);
   });
 
@@ -161,6 +174,11 @@
 
 }).call(this);
 (function(){
+  var setLine = function(cm, lineNumber, content) {
+    var lineContent = cm.doc.getLine(lineNumber);
+    return cm.doc.replaceRange(content, {line: lineNumber, ch: 1}, {line: lineNumber, ch: lineContent.length});
+  };
+
   module('constructor options');
   test('setting prompt without welcome message should display prompt', function(){
     var prompt = ">>> ";
@@ -195,11 +213,11 @@
     var cs_console = createConsole({
       historyLabel: historyLabel,
       prompt: prompt,
-      commandHandle: function(line, report, prompt){report(false)}, 
+      commandHandle: function(line, report, prompt){report(false)},
     });
 
     var cm = cs_console.innerConsole();
-    cm.setLine(cm.lineCount() - 1, prompt + "blah blah and more blah");
+    setLine(cm, cm.lineCount() - 1, prompt + "blah blah and more blah");
     cs_console.submit();
 
     ok( Object.keys(localStorage).join().match(new RegExp(historyLabel)) );
@@ -209,6 +227,7 @@
     var welcomeMessage = 'Hello, this is the console';
     var cs_console = createConsole({welcomeMessage: welcomeMessage});
     var cm = cs_console.innerConsole();
+    debugger
     ok( cs_console.outputWidgets[0].node.innerText.match(new RegExp(welcomeMessage)) );
   });
 
@@ -231,7 +250,7 @@
     });
 
     var cm = cs_console.innerConsole();
-    cm.setLine(cm.lineCount() - 1, prompt + "> blah blah and more blah");
+    setLine(cm, cm.lineCount() - 1, prompt + "> blah blah and more blah");
     cs_console.submit();
 
     ok( callbackCalled );
@@ -247,7 +266,7 @@
     });
 
     var cm = cs_console.innerConsole();
-    cm.setLine(cm.lineCount() - 1, "> blah blah and more blah");
+    setLine(cm, cm.lineCount() - 1, "> blah blah and more blah");
     cs_console.submit();
 
     ok( callbackCalled );

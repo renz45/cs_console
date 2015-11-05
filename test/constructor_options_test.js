@@ -1,4 +1,9 @@
 (function(){
+  var setLine = function(cm, lineNumber, content) {
+    var lineContent = cm.doc.getLine(lineNumber);
+    return cm.doc.replaceRange(content, {line: lineNumber, ch: 1}, {line: lineNumber, ch: lineContent.length});
+  };
+
   module('constructor options');
   test('setting prompt without welcome message should display prompt', function(){
     var prompt = ">>> ";
@@ -33,11 +38,11 @@
     var cs_console = createConsole({
       historyLabel: historyLabel,
       prompt: prompt,
-      commandHandle: function(line, report, prompt){report(false)}, 
+      commandHandle: function(line, report, prompt){report(false)},
     });
 
     var cm = cs_console.innerConsole();
-    cm.setLine(cm.lineCount() - 1, prompt + "blah blah and more blah");
+    setLine(cm, cm.lineCount() - 1, prompt + "blah blah and more blah");
     cs_console.submit();
 
     ok( Object.keys(localStorage).join().match(new RegExp(historyLabel)) );
@@ -69,7 +74,7 @@
     });
 
     var cm = cs_console.innerConsole();
-    cm.setLine(cm.lineCount() - 1, prompt + "> blah blah and more blah");
+    setLine(cm, cm.lineCount() - 1, prompt + "> blah blah and more blah");
     cs_console.submit();
 
     ok( callbackCalled );
@@ -85,7 +90,7 @@
     });
 
     var cm = cs_console.innerConsole();
-    cm.setLine(cm.lineCount() - 1, "> blah blah and more blah");
+    setLine(cm, cm.lineCount() - 1, "> blah blah and more blah");
     cs_console.submit();
 
     ok( callbackCalled );

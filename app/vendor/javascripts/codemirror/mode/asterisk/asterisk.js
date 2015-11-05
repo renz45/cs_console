@@ -1,3 +1,6 @@
+// CodeMirror, copyright (c) by Marijn Haverbeke and others
+// Distributed under an MIT license: http://codemirror.net/LICENSE
+
 /*
  * =====================================================================================
  *
@@ -8,11 +11,21 @@
  *        Created:  05/17/2012 09:20:25 PM
  *       Revision:  none
  *
- *         Author:  Stas Kobzar (stas@modulis.ca), 
+ *         Author:  Stas Kobzar (stas@modulis.ca),
  *        Company:  Modulis.ca Inc.
  *
  * =====================================================================================
  */
+
+(function(mod) {
+  if (typeof exports == "object" && typeof module == "object") // CommonJS
+    mod(require("../../lib/codemirror"));
+  else if (typeof define == "function" && define.amd) // AMD
+    define(["../../lib/codemirror"], mod);
+  else // Plain browser env
+    mod(CodeMirror);
+})(function(CodeMirror) {
+"use strict";
 
 CodeMirror.defineMode("asterisk", function() {
   var atoms    = ["exten", "same", "include","ignorepat","switch"],
@@ -52,8 +65,7 @@ CodeMirror.defineMode("asterisk", function() {
 
   function basicToken(stream,state){
     var cur = '';
-    var ch  = '';
-    ch = stream.next();
+    var ch = stream.next();
     // comment
     if(ch == ";") {
       stream.skipToEnd();
@@ -99,9 +111,9 @@ CodeMirror.defineMode("asterisk", function() {
       state.extenStart = true;
       switch(cur) {
         case 'same': state.extenSame = true; break;
-        case 'include': 
-        case 'switch': 
-        case 'ignorepat': 
+        case 'include':
+        case 'switch':
+        case 'ignorepat':
           state.extenInclude = true;break;
         default:break;
       }
@@ -121,9 +133,8 @@ CodeMirror.defineMode("asterisk", function() {
       };
     },
     token: function(stream, state) {
-      
+
       var cur = '';
-      var ch  = '';
       if(stream.eatSpace()) return null;
       // extension started
       if(state.extenStart){
@@ -157,7 +168,7 @@ CodeMirror.defineMode("asterisk", function() {
       } else if(state.extenPriority) {
         state.extenPriority = false;
         state.extenApplication = true;
-        ch = stream.next(); // get comma
+        stream.next(); // get comma
         if(state.extenSame) return null;
         stream.eatWhile(/[^,]/);
         return "number";
@@ -174,10 +185,12 @@ CodeMirror.defineMode("asterisk", function() {
       } else{
         return basicToken(stream,state);
       }
-      
+
       return null;
     }
   };
 });
 
 CodeMirror.defineMIME("text/x-asterisk", "asterisk");
+
+});

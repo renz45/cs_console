@@ -3,13 +3,13 @@ This file contains any helper methods used in tests. Any external test files
 should be loaded after this file and be self executing functions
 */
 
-createConsole = function(options){
+var createConsole = function(options){
   var el = document.getElementById('console');
   el.className = 'console'
   el.innerHTML = ''
 
   options = options ? options : {}
-
+  console.log(options)
   return new CSConsole(el,{
     prompt: options.prompt,
     historyLabel: options.historyLabel,

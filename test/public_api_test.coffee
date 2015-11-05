@@ -14,8 +14,11 @@ setup = ->
   inputValue = 'hello Worldy'
 
 currentLine = ->
-  cm.getLine(cm.lineCount()-1)
+  cm.doc.getLine(cm.lineCount()-1)
 
+setLine = (lineNumber, content)->
+  lineContent = cm.doc.getLine(lineNumber)
+  cm.doc.replaceRange(content, {line: lineNumber, ch: 1}, {line: lineNumber, ch: lineContent.length})
 
 module('Public API: #setValue', {setup: setup})
 test 'it sets the value of the input line', ->
@@ -29,12 +32,12 @@ test 'it sets the multi-line value of the input line', ->
 
 module('Public API: #getValue', {setup: setup})
 test 'it returns the value of the input line', ->
-  cm.setLine(cm.lineCount()-1, "> " + inputValue)
+  setLine(cm.lineCount()-1, "> " + inputValue)
   equal( csConsole.getValue(), inputValue )
 
 test 'it returns the multi-line value of the input line', ->
   inputValue = 'hello worldy\nthis is\nmulti-line'
-  cm.setLine(cm.lineCount()-1, "> " + inputValue)
+  setLine(cm.lineCount()-1, "> " + inputValue)
   equal( csConsole.getValue(), inputValue )
 
 module('Public API: #setPrompt', {setup: setup})

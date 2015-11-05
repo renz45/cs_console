@@ -50,15 +50,19 @@ class window.CSConsole
 
   # Sets a value for the console input
   setValue: (value)=>
-    @console.setLine(@lineNumber(), "#{@options.prompt}#{value}")
+    @setLine(@lineNumber(), "#{@options.prompt}#{value}")
 
   # Gets all input current un submitted in the console, this includes multiline input
   getValue: =>
     @getAllInput()
 
+  setLine: (lineNumber, content)=>
+    lineContent = @console.doc.getLine(lineNumber)
+    @console.doc.replaceRange(content, {line: lineNumber - 1, ch: 1}, {line: lineNumber - 1, ch: lineContent.length})
+
   # Sets the prompt
   setPrompt: (prompt)=>
-    @console.setLine(@currentLine, @console.getLine(@currentLine).replace(new RegExp(@options.prompt), prompt))
+    @setLine(@currentLine, @console.doc.getLine(@currentLine).replace(new RegExp(@options.prompt), prompt))
     @options.prompt = prompt
 
   # Focus the typer input box
@@ -67,7 +71,7 @@ class window.CSConsole
 
   # Append the value to the input box
   appendToInput: (value)->
-    @console.setLine(@lineNumber(), "#{@console.getLine(@lineNumber())}#{value}")
+    @setLine(@lineNumber(), "#{@console.doc.getLine(@lineNumber())}#{value}")
 
   # Gets all input, even if it is a multiline paste into the console.
   getAllInput: =>
@@ -76,10 +80,10 @@ class window.CSConsole
 
     while startingInput <= @lineNumber()
       if startingInput == @currentLine
-        lineInput = @console.getLine(startingInput).substr(@promptLength(), @console.getLine(@currentLine).length)
+        lineInput = @console.doc.getLine(startingInput).substr(@promptLength(), @console.doc.getLine(@currentLine).length)
         input.push(lineInput)
       else
-        input.push(@console.getLine(startingInput))
+        input.push(@console.doc.getLine(startingInput))
       startingInput++
     input.join("\n")
 
@@ -88,6 +92,7 @@ class window.CSConsole
   reset: (welcomeMessage=true)=>
     @submitInProgress = false
     @console.setValue('')
+    @currentLine = 0
     for widget in @outputWidgets
       @console.removeLineWidget(widget)
 
@@ -118,7 +123,7 @@ class window.CSConsole
 
     keyActions = new KeyActions(@options)
 
-    @console = window.CodeMirror(el, {
+    @console = window.CodeMirror el,
       mode:
         name: @options.syntax
         useCPP: true
@@ -164,7 +169,6 @@ class window.CSConsole
         "Cmd-S": @noop
         "Ctrl-Z": @noop # Disable undo since it borks the console interface
         "Cmd-Z": @noop # Disable undo since it borks the console interface
-    })
 
     keyActions.setConsole(@console)
 
@@ -178,7 +182,7 @@ class window.CSConsole
 
     if @options.welcomeMessage
       @showWelcomeMessage()
-    
+
     # set the initial value if one exists
     if @options.initialValue
       @setValue(@options.initialValue)
@@ -227,7 +231,7 @@ class window.CSConsole
   # Assign callbacks to instance variables
   initCallbacks: (options)=>
     @commandValidate = options.commandValidate
-    @commandHandle = options.commandHandle 
+    @commandHandle = options.commandHandle
 
   # submit the corrent input, store the input in the command history
   submit: =>
@@ -245,7 +249,7 @@ class window.CSConsole
   # Add a newline to the editor that doesn't include the prompt
   nonReactingNewline: ->
     @currentLine = @lineNumber()
-    @console.setLine(@currentLine,  "#{@inputLine()}\n")
+    @setLine(@currentLine,  "#{@inputLine()}\n")
 
   # get length of the prompt as an int
   promptLength: =>
@@ -253,7 +257,7 @@ class window.CSConsole
 
   # get the content of the single input line
   inputLine: =>
-    @console.getLine(@lineNumber())
+    @console.doc.getLine(@lineNumber())
 
   # Get the current input line number
   lineNumber: =>
@@ -320,7 +324,7 @@ class window.CSConsole
       widgetOptions.noHScroll = true
 
     @outputWidgets.push(@console.addLineWidget(lineNumber, widgetElement, widgetOptions))
-    
+
     setTimeout =>
       @console.scrollIntoView({line: @console.lineCount() - 1, ch: 0})
     ,
@@ -350,7 +354,7 @@ class window.CSConsole
   # Move the input forward and lock the previous lines to editing
   moveInputForward: =>
     @currentLine = @lineNumber() + 1
-    @console.setLine(@currentLine - 1,  "#{@inputLine()}\n#{@options.prompt}")
+    @setLine(@currentLine - 1,  "#{@inputLine()}\n#{@options.prompt}")
 
     # ensure that the cursor is at the prompt
     @storedCursorPosition = {line: @currentLine, ch: @promptLength()}
@@ -413,7 +417,7 @@ class window.CSConsole
         @_defaultCommands.delGroupBefore(@console)
 
     deleteLine: =>
-      @console.setLine(@console.getCursor().line, @options.prompt)
+      @setLine(@console.getCursor().line, @options.prompt)
 
     # utility methods
     consoleLineCount: =>
@@ -438,7 +442,7 @@ class window.CSConsole
       @options = options
       if @options.historyLabel
         @historyLabel = "cs-#{@options.historyLabel}-console-history"
-      
+
       if @options.maxEntries
         @maxEntries = options.maxHistoryEntries
 
@@ -464,12 +468,12 @@ class window.CSConsole
       return if currentHistory[currentHistory.length - 1] == item
 
       currentHistory.push(item)
-      
+
       # Truncate extra history
       if currentHistory.length >= @maxEntries
         startSlice = currentHistory.length - @maxEntries
         currentHistory = currentHistory.slice(startSlice, currentHistory.length)
-      
+
       @cachedHistory = currentHistory
       @storage[@historyLabel] = JSON.stringify(currentHistory)
       @currentIndex = currentHistory.length - 1
