@@ -1,5 +1,5 @@
 /*
-CS Console Version: 1.1.1
+CS Console Version: 2.0.1
 */
 
 /*
@@ -364,7 +364,7 @@ THE SOFTWARE.
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   window.CSConsole = (function() {
-    var CSConsoleHistory, KeyActions;
+    var CSConsoleHistory, CodeMirrorHelpers, KeyActions;
 
     CSConsole.prototype.keyMap = {
       'Alt-Delete': "delGroupAfter",
@@ -429,16 +429,7 @@ THE SOFTWARE.
     };
 
     CSConsole.prototype.setLine = function(lineNumber, content) {
-      var lineContent;
-
-      lineContent = this.console.doc.getLine(lineNumber);
-      return this.console.doc.replaceRange(content, {
-        line: lineNumber,
-        ch: 1
-      }, {
-        line: lineNumber,
-        ch: lineContent.length
-      });
+      return this.helpers.setLine(lineNumber, content);
     };
 
     CSConsole.prototype.setPrompt = function(prompt) {
@@ -479,6 +470,7 @@ THE SOFTWARE.
       }
       this.submitInProgress = false;
       this.console.setValue('');
+      this.currentLine = 0;
       _ref = this.outputWidgets;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         widget = _ref[_i];
@@ -519,7 +511,6 @@ THE SOFTWARE.
         tabSize: 2,
         keyMap: 'console',
         lineWrapping: true,
-        onKeyEvent: this.focusInput,
         undoDepth: 0,
         autoFocus: this.options.autoFocus,
         extraKeys: {
@@ -554,7 +545,9 @@ THE SOFTWARE.
           "Cmd-Z": this.noop
         }
       });
+      this.helpers = new CodeMirrorHelpers(this.console);
       keyActions.setConsole(this.console);
+      this.console.on('keydown', this.focusInput);
       setTimeout((function() {
         return _this.console.refresh();
       }), 1);
@@ -751,6 +744,28 @@ THE SOFTWARE.
 
     CSConsole.prototype.noop = function() {};
 
+    CodeMirrorHelpers = (function() {
+      function CodeMirrorHelpers(cmInstance) {
+        this.setLine = __bind(this.setLine, this);        this.cmInstance = cmInstance;
+      }
+
+      CodeMirrorHelpers.prototype.setLine = function(lineNumber, content) {
+        var lineContent;
+
+        lineContent = this.cmInstance.doc.getLine(lineNumber);
+        return this.cmInstance.doc.replaceRange(content, {
+          line: lineNumber,
+          ch: 0
+        }, {
+          line: lineNumber,
+          ch: lineContent.length
+        });
+      };
+
+      return CodeMirrorHelpers;
+
+    })();
+
     KeyActions = (function() {
       KeyActions.prototype._defaultCommands = CodeMirror.commands;
 
@@ -765,11 +780,17 @@ THE SOFTWARE.
         this.goDocStart = __bind(this.goDocStart, this);
         this.delCharBefore = __bind(this.delCharBefore, this);
         this.goCharLeft = __bind(this.goCharLeft, this);
+        this.setLine = __bind(this.setLine, this);
         this.setConsole = __bind(this.setConsole, this);        this.options = options;
       }
 
       KeyActions.prototype.setConsole = function(console) {
-        return this.console = console;
+        this.console = console;
+        return this.helpers = new CodeMirrorHelpers(console);
+      };
+
+      KeyActions.prototype.setLine = function(lineNumber, content) {
+        return this.helpers.setLine(lineNumber, content);
       };
 
       KeyActions.prototype.goCharLeft = function() {
