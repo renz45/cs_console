@@ -1,6 +1,6 @@
 {
   "name": "cs_console",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "compiled/cs_console.js",
   "ignore": [
     ".jshintrc",
