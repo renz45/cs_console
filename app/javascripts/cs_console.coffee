@@ -57,8 +57,7 @@ class window.CSConsole
     @getAllInput()
 
   setLine: (lineNumber, content)=>
-    lineContent = @console.doc.getLine(lineNumber)
-    @console.doc.replaceRange(content, {line: lineNumber - 1, ch: 1}, {line: lineNumber - 1, ch: lineContent.length})
+    @helpers.setLine(lineNumber, content)
 
   # Sets the prompt
   setPrompt: (prompt)=>
@@ -134,7 +133,6 @@ class window.CSConsole
       tabSize: 2
       keyMap: 'console'
       lineWrapping: true
-      onKeyEvent: @focusInput
       undoDepth: 0 # CodeMirror undo borks the console layout
       autoFocus: @options.autoFocus
       extraKeys:
@@ -170,7 +168,9 @@ class window.CSConsole
         "Ctrl-Z": @noop # Disable undo since it borks the console interface
         "Cmd-Z": @noop # Disable undo since it borks the console interface
 
+    @helpers = new CodeMirrorHelpers(@console)
     keyActions.setConsole(@console)
+    @console.on('keydown', @focusInput)
 
     setTimeout ( =>
       @console.refresh()
@@ -365,6 +365,16 @@ class window.CSConsole
   noop: ->
     #pointing some keys here to disable them
 
+  # Shared helpers for interacting with codemirror
+  class CodeMirrorHelpers
+    constructor: (cmInstance)->
+      @cmInstance = cmInstance
+
+    # A reimplementation of the original setLine function that used to exist in older version of codemirror
+    setLine: (lineNumber, content)=>
+      lineContent = @cmInstance.doc.getLine(lineNumber)
+      @cmInstance.doc.replaceRange(content, {line: lineNumber, ch: 0}, {line: lineNumber, ch: lineContent.length})
+
   # This class contains key overrides that replace actions that might:
   #   - Allow the cursor to move back up a line
   #   - Delete characters on previous lines
@@ -380,6 +390,10 @@ class window.CSConsole
     # set a console object, this is most likely a code mirror instance
     setConsole: (console)=>
       @console = console
+      @helpers = new CodeMirrorHelpers(console)
+
+    setLine: (lineNumber, content)=>
+      @helpers.setLine(lineNumber, content)
 
     # move the cursor left. Left arror key
     goCharLeft: =>

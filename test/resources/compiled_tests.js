@@ -227,7 +227,6 @@
     var welcomeMessage = 'Hello, this is the console';
     var cs_console = createConsole({welcomeMessage: welcomeMessage});
     var cm = cs_console.innerConsole();
-    debugger
     ok( cs_console.outputWidgets[0].node.innerText.match(new RegExp(welcomeMessage)) );
   });
 
