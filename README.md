@@ -1,3 +1,5 @@
+
+
 #Code School Console
 This console was designed to take advantage of code mirrors excellent key input
 and code highlight ability. The idea is that we should let code mirror handle all
@@ -53,7 +55,6 @@ loading it as part of the larger project.
 
 
 
-
 * **prompt** - This is the value of the prompt set in the editor.
 * **theme** - Set the code mirror theme, defaults to 'vibrant-ink'
 * **lineNumbers** - Enables line numbers, defaults to false
@@ -62,7 +63,7 @@ loading it as part of the larger project.
 * **setValue(string)** - Set the value of the input line
 * **getValue** - Get the value of the input, this includes multiline input
 * **setPrompt(string)** - Set the prompt
-* **reset(prompt)** - Clear the console, pass false to this method to not display the welcome message.
+* **reset(welcomeMessage)** - Clear the console, pass false to this method to not display the welcome message.
 * **buildWidget(lineNumber, responseObject)** - Manually create a output widget. This requires a lineNumber and a response object like the one used in the commandHandle callback Method above.
 * **innerConsole** - Return the CodeMirror instance used within the console, useful for low level interface functionality.
 * **focus** - Focus the input typer box
